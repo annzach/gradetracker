@@ -23,6 +23,16 @@ router.get('/:id', (req, res) => {
     });
 });
 
+router.get(`/total/`, (req, res) => {
+  Assignment.getTotal()
+    .then(assignments => {
+      res.send(assignments);
+    })
+    .catch(err => {
+      res.status(400).send(err);
+    });
+});
+
 
 router.post('/', (req, res) => {
   Assignment.create(req.body)

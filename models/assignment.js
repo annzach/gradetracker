@@ -1,4 +1,5 @@
 const squel = require('squel').useFlavour('mysql');
+const mysql =require('mysql');
 const uuid = require('uuid');
 const moment = require('moment');
 
@@ -20,12 +21,32 @@ connection.query(`create table if not exists assignments (
 exports.getAll = function() {
   return new Promise((resolve, reject) => {
     let sql = squel.select().from('assignments').toString();
-
+  
     connection.query(sql, (err, assignments) => {
       if(err) {
         reject(err);
       } else {
         resolve(assignments);
+        console.log(assignments);
+  
+      }
+    });
+  });
+};
+
+exports.getTotal = function() {
+  console.log('getTotal');
+  return new Promise((resolve, reject) => {
+    //let sql = squel.select(sum()).from('assignments').toString();
+     let sql =  connection.query(`select sum(total), sum(score) from assignments`);
+     console.log(sql);
+    connection.query(`select sum(total), sum(score) from assignments`, (err, assignments) => {
+      if(err) {
+        reject(err);
+      } else {
+        resolve(assignments);
+        console.log(assignments);
+     
       }
     });
   });
